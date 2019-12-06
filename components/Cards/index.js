@@ -22,17 +22,23 @@ axios.get("https://lambda-times-backend.herokuapp.com/articles")
     .then(response => {
         // console.log(response);
         // console.log(response.data.articles);
+        // the object "response.data.articles" becomes an array with each entry being [topic, anotherArray[objects]]
         const articleEntries = Object.entries(response.data.articles);
         // console.log(articleEntries);
-        // the object "response.data.articles" becomes an array with each entry being [topic, anotherArray[objects]]
         let headline = "someHeadline";
         let authorPhoto = "some url";
         let authorName = "author name";
+        // run through every entry in articleEntries array using a for loop.
+        // remember: every entry is in the format [topic, arrayOfObjects]
         for (let [topic, arrayOfObjects] of articleEntries){
             arrayOfObjects.forEach(article => {
-                const articleEntry = Object.entries(article);
                 // the object "article" becomes an array with each entry being [key, value]
+                const articleEntry = Object.entries(article);
+                // remember: arrayOfObjects was an array that contained objects. so for each object in the arrayOfObjects array, we convert to an array
                 // console.log(articleEntry);
+                // run through every entry in articleEntry array using a for loop
+                // remember: every entry is in the format [key, value]
+                // if a key matches the keyword, we assign it the new value in place of the filler value declared above.
                 for (let [key, value] of articleEntry){
                     if (key === "headline"){
                         headline = value;
@@ -44,6 +50,7 @@ axios.get("https://lambda-times-backend.herokuapp.com/articles")
                         authorName = value;
                     }
                 }
+                // once we have obtained values from each article object we run the create component function and pass it arguments, then append it to the "cards-container" class
                 document.querySelector(".cards-container").append(createCard(headline, authorPhoto, authorName));
             })
         }
